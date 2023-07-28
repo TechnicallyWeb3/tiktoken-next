@@ -14,7 +14,7 @@ const TikTokenInfo: React.FC = () => {
       setInfo(info);
     });
 
-    const accountToCheck: Address = '0x123...'; // Replace with the desired address
+    const accountToCheck: Address = '0xD4F0A30Ff0DbF42fC795A7D2d9076bb3764df76c'; // Replace with the desired address
 
     // Get user IDs
     TikToken.getUserIDs(accountToCheck).then((ids) => {
