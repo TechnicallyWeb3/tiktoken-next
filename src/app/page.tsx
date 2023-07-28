@@ -1,4 +1,6 @@
 import Image from 'next/image'
+import { PolygonInfo } from '@providers/PolygonInfo'
+import { TikToken } from '@providers/TikTokenInfo'
 
 export default function Home() {
   return (
