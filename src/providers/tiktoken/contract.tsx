@@ -1,4 +1,4 @@
-import { getContract, Address } from 'viem';
+import { getContract, Address, TransactionSerializable, Hash } from 'viem';
 import { abi } from './abi';
 import { publicClient } from '@providers/ViemConfig';
 
@@ -83,6 +83,70 @@ const TikToken = {
 
   async allowance(owner: Address, spender: Address) {
     return await contract.read.allowance([owner, spender]);
+  },
+
+  async transfer(sig: Hash) {
+    const signedRequest = sig
+    publicClient.request({
+      method: 'eth_sendRawTransaction',
+      params: [signedRequest],
+    })
+  },
+
+  async transferFrom(sig: Hash) {
+    const signedRequest = sig
+    publicClient.request({
+      method: 'eth_sendRawTransaction',
+      params: [signedRequest],
+    })
+  },
+
+  async approve(sig: Hash) {
+    const signedRequest = sig
+    publicClient.request({
+      method: 'eth_sendRawTransaction',
+      params: [signedRequest],
+    })
+  },
+
+  async increaseAllowance(sig: Hash) {
+    const signedRequest = sig
+    publicClient.request({
+      method: 'eth_sendRawTransaction',
+      params: [signedRequest],
+    })
+  },
+
+  async decreaseAllowance(sig: Hash) {
+    const signedRequest = sig
+    publicClient.request({
+      method: 'eth_sendRawTransaction',
+      params: [signedRequest],
+    })
+  },
+
+  async batchMint(sig: Hash) {
+    const signedRequest = sig
+    publicClient.request({
+      method: 'eth_sendRawTransaction',
+      params: [signedRequest],
+    })
+  },
+
+  async mint(sig: Hash) {
+    const signedRequest = sig
+    publicClient.request({
+      method: 'eth_sendRawTransaction',
+      params: [signedRequest],
+    })
+  },
+
+  async updateAddress(sig: Hash) {
+    const signedRequest = sig
+    publicClient.request({
+      method: 'eth_sendRawTransaction',
+      params: [signedRequest],
+    })
   },
 };
 
