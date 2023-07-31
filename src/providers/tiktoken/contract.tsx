@@ -13,165 +13,76 @@ const TikToken = {
   publicClient,
 
   async getInfo() {
-    try {
-      const [name, symbol, decimals, owner, totalSupply, remainingSupply, currentReward, getHalvingCount, getNextHalving, getUserCounter] = await Promise.all([
-        contract.read.name(),
-        contract.read.symbol(),
-        contract.read.decimals(),
-        contract.read.owner(),
-        contract.read.totalSupply(),
-        contract.read.remainingSupply(),
-        contract.read.currentReward(),
-        contract.read.getHalvingCount(),
-        contract.read.getNextHalving(),
-        contract.read.getUserCounter(),
-      ]);
+    const [name, symbol, decimals, owner, totalSupply, remainingSupply, currentReward, getHalvingCount, getNextHalving, getUserCounter] = await Promise.all([
+      contract.read.name(),
+      contract.read.symbol(),
+      contract.read.decimals(),
+      contract.read.owner(),
+      contract.read.totalSupply(),
+      contract.read.remainingSupply(),
+      contract.read.currentReward(),
+      contract.read.getHalvingCount(),
+      contract.read.getNextHalving(),
+      contract.read.getUserCounter(),
+    ]);
 
-      return { name, symbol, decimals, owner, totalSupply, remainingSupply, currentReward, getHalvingCount, getNextHalving, getUserCounter };
-    } catch (error) {
-      console.error('Error calling getInfo:', error);
-      return null; // Handle the error gracefully or throw an exception as per your requirement
-    }
+    return { name, symbol, decimals, owner, totalSupply, remainingSupply, currentReward, getHalvingCount, getNextHalving, getUserCounter };
   },
 
   async tokenName() {
-    try {
-      const data = await contract.read.name();
-      return data;
-    } catch (error) {
-      console.error('Error calling tokenName:', error);
-      return null; // Handle the error gracefully or throw an exception as per your requirement
-    }
+    return await contract.read.name();
   },
 
   async tokenSymbol() {
-    try {
-      const data = await contract.read.symbol();
-      return data;
-    } catch (error) {
-      console.error('Error calling tokenSymbol:', error);
-      return null;
-    }
+    return await contract.read.symbol();
   },
 
   async tokenDecimals() {
-    try {
-      const data = await contract.read.decimals();
-      return data;
-    } catch (error) {
-      console.error('Error calling tokenDecimals:', error);
-      return null;
-    }
+    return await contract.read.decimals();
   },
 
   async contractOwner() {
-    try {
-      const data = await contract.read.owner();
-      return data;
-    } catch (error) {
-      console.error('Error calling contractOwner:', error);
-      return null;
-    }
+    return await contract.read.owner();
   },
 
   async totalSupply() {
-    try {
-      const data = await contract.read.totalSupply();
-      return data;
-    } catch (error) {
-      console.error('Error calling totalSupply:', error);
-      return null;
-    }
+    return await contract.read.totalSupply();
   },
 
   async remainingSupply() {
-    try {
-      const data = await contract.read.remainingSupply();
-      return data;
-    } catch (error) {
-      console.error('Error calling remainingSupply:', error);
-      return null;
-    }
+    return await contract.read.remainingSupply();
   },
 
   async currentReward() {
-    try {
-      const data = await contract.read.currentReward();
-      return data;
-    } catch (error) {
-      console.error('Error calling currentReward:', error);
-      return null;
-    }
+    return await contract.read.currentReward();
   },
 
   async getHalvingCount() {
-    try {
-      const data = await contract.read.getHalvingCount();
-      return data;
-    } catch (error) {
-      console.error('Error calling getHalvingCount:', error);
-      return null;
-    }
+    return await contract.read.getHalvingCount();
   },
 
   async getNextHalving() {
-    try {
-      const data = await contract.read.getNextHalving();
-      return data;
-    } catch (error) {
-      console.error('Error calling getNextHalving:', error);
-      return null;
-    }
+    return await contract.read.getNextHalving();
   },
 
   async hasMinted(id: string) {
-    try {
-      const data = await contract.read.hasMinted([id]);
-      return data;
-    } catch (error) {
-      console.error('Error calling hasMinted:', error);
-      return null;
-    }
+    return await contract.read.hasMinted([id]);
   },
 
   async getUserAccount(id: string) {
-    try {
-      const data = await contract.read.getUserAccount([id]);
-      return data;
-    } catch (error) {
-      console.error('Error calling getUserAccount:', error);
-      return null;
-    }
+    return await contract.read.getUserAccount([id]);
   },
 
   async getUserIDs(account: Address) {
-    try {
-      const result = await contract.read.getUserIDs([account]);
-      return result;
-    } catch (error) {
-      console.error('Error calling getUserIDs:', error);
-      return [];
-    }
+    return await contract.read.getUserIDs([account]);
   },
 
   async balanceOf(account: Address) {
-    try {
-      const result = await contract.read.balanceOf([account]);
-      return result;
-    } catch (error) {
-      console.error('Error calling balanceOf:', error);
-      return 0;
-    }
+    return await contract.read.balanceOf([account]);
   },
 
   async allowance(owner: Address, spender: Address) {
-    try {
-      const data = await contract.read.allowance([owner, spender]);
-      return data;
-    } catch (error) {
-      console.error('Error calling allowance:', error);
-      return null;
-    }
+    return await contract.read.allowance([owner, spender]);
   },
 };
 

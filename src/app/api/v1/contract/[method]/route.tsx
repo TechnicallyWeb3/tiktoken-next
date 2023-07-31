@@ -1,5 +1,22 @@
 import TikToken from "@providers/tiktoken/contract"
 
+async function calculateCor(info:bigint) {
+    return Number(info / await TikToken.currentReward())
+}
+
+async function calculateDec(info:bigint) {
+    return Number(info) / (10 ** await TikToken.tokenDecimals())
+}
+
+function calculateStr(info:bigint) {
+    return String(info)
+}
+
+async function calculateNot(info:bigint) {
+    const dec = await calculateDec(info)
+    return dec.toExponential()
+}
+
 export async function GET (request:Request,{ params }: { params: { method: string } }) {
     if (params.method === 'name' || params.method === 'symbol' || params.method === 'decimals' || params.method === 'owner' || params.method === 'getHalvingCount' || params.method === 'getUserCounter') {
         const contractInfo = await TikToken.getInfo()
@@ -15,11 +32,32 @@ export async function GET (request:Request,{ params }: { params: { method: strin
     const urlParams = url.split('?')[1]
     const searchParams = new URLSearchParams(urlParams)
     const hasFormat = searchParams.has('format')
+
     if (params.method === 'totalSupply' || params.method === 'remainingSupply' || params.method === 'currentReward' || params.method === 'getNextHalving') {
         const contractInfo = await TikToken.getInfo()
         let info = contractInfo?.[params.method]
         if (hasFormat) {
-            return
+            const format = searchParams.get('format')
+            let value
+            switch (format) {
+                case 'cor' :
+                    value = `${await calculateCor(info)} ${contractInfo?.symbol}cor`
+                    break;
+                case 'dec' :
+                    value = `${await calculateDec(info)} ${contractInfo?.symbol}`
+                    break;
+                case 'str' :
+                    value = `0.${calculateStr(info)} ${contractInfo?.symbol}`
+                    break;
+                case 'not' :
+                    value = `${await calculateNot(info)} ${contractInfo?.symbol}`
+                    break;
+                case 'raw' :
+                    value = info
+                    break;
+            }
+            console.log(value)
+            return new Response(JSON.stringify(value))
         } else {
             // default response of raw data
             return new Response(JSON.stringify(info?.toString()))
