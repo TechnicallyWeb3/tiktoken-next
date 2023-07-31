@@ -65,7 +65,17 @@ export async function GET (request:Request,{ params }: { params: { method: strin
 
     }
 
-    const hasId = searchParams.has('id')
+    if (params.method === 'hasMinted' ||params.method === 'getUserAccount') {
+        const hasId = searchParams.has('id')
+        const id = 
+        if (hasId) {
+            let info = TikToken?.[params.method]()
+
+        } else {
+            return
+        }
+    }
+
     const hasAccount = searchParams.has('account')
     const hasOwner = searchParams.has('owner')
     const hasSpender = searchParams.has('spender')
