@@ -4,17 +4,18 @@ import { Address } from "viem"
 const defaultFormat = 'dec'
 
 async function getAsFormat(value:bigint, format:string) {
+    const symbol = await TikToken.tokenSymbol()
     switch (format) {
         case 'cor' :
-            return `${await calculateCor(value)} cor`
+            return `${await calculateCor(value)} ${symbol}cor`
         case 'dec' :
-            return `${await calculateDec(value)} `
+            return `${await calculateDec(value)} ${symbol}`
         case 'str' :
-            return `0.${calculateStr(value)} `
+            return `0.${calculateStr(value)} ${symbol}`
         case 'not' :
-            return `${await calculateNot(value)} `
+            return `${await calculateNot(value)} ${symbol}`
         case 'raw' :
-            return `${value} `
+            return `${value} ${symbol}cot`
         default :
             return value.toString()
     }
