@@ -1,4 +1,5 @@
 import TikToken from "@providers/tiktoken/contract"
+import { Address } from "viem"
 
 async function calculateCor(info:bigint) {
     return Number(info / await TikToken.currentReward())
@@ -53,8 +54,10 @@ export async function GET (request:Request,{ params }: { params: { method: strin
                     value = `${await calculateNot(info)} ${contractInfo?.symbol}`
                     break;
                 case 'raw' :
-                    value = info
+                    value = info.toString()
                     break;
+                default :
+                    value = info.toString()
             }
             console.log(value)
             return new Response(JSON.stringify(value))
@@ -65,14 +68,33 @@ export async function GET (request:Request,{ params }: { params: { method: strin
 
     }
 
-    if (params.method === 'hasMinted' ||params.method === 'getUserAccount') {
+    if (params.method === 'hasMinted' || params.method === 'getUserAccount') {
         const hasId = searchParams.has('id')
 
         if (hasId) {
             const id = searchParams.get('id')
-            // Check if 'id' is not null and is a non-empty string
-            if (id && typeof id === 'string' && id.trim().length > 0) {
+            // Check if 'id' is not null
+            if (id) {
                 return new Response(JSON.stringify(await TikToken?.[params.method](id)));
+            } else {
+                return "type error"
+            }
+
+        } else {
+            return "id required"
+        }
+    }
+
+    if (params.method === 'getAccountIDs' || params.method === 'balanceOf') {
+        const hasId = searchParams.has('a')
+
+        if (hasId) {
+            let address = searchParams.get('a')
+            // Check if 'id' is not null and is a non-empty string
+            if (address) {
+                address = address as Address
+                const balance = await TikToken?.[params.method](address)
+                return new Response(JSON.stringify(await calculateDec(balance)));
             } else {
                 return "type error"
             }
