@@ -1,4 +1,5 @@
 import TikToken from "@providers/tiktoken/contract"
+import { format } from "path"
 import { Address } from "viem"
 
 const defaultFormat = 'dec'
@@ -7,7 +8,7 @@ async function getAsFormat(value:bigint, format:string) {
     const symbol = await TikToken.tokenSymbol()
     switch (format) {
         case 'cor' :
-            return `${await calculateCor(value)} ${symbol}cor`
+            return `${await calculateCor(value)} ${symbol}-cor`
         case 'dec' :
             return `${await calculateDec(value)} ${symbol}`
         case 'str' :
@@ -15,7 +16,7 @@ async function getAsFormat(value:bigint, format:string) {
         case 'not' :
             return `${await calculateNot(value)} ${symbol}`
         case 'raw' :
-            return `${value} ${symbol}cot`
+            return `${value} ${symbol}-cot`
         default :
             return value.toString()
     }
@@ -52,7 +53,7 @@ export async function GET (request:Request,{ params }: { params: { method: strin
     const url = request.url
     const urlParams = url.split('?')[1]
     const searchParams = new URLSearchParams(urlParams)
-    const hasFormat = searchParams.has('format')
+    const hasFormat = searchParams.has('format') || searchParams.has('f')
 
     if (params.method === 'totalSupply' || params.method === 'remainingSupply' || params.method === 'currentReward' || params.method === 'getNextHalving') {
         const contractInfo = await TikToken.getInfo()
@@ -86,17 +87,18 @@ export async function GET (request:Request,{ params }: { params: { method: strin
     }
 
     if (params.method === 'getUserIDs' || params.method === 'balanceOf') {
-        const hasId = searchParams.has('a')
+        const hasAccount = searchParams.has('account') || searchParams.has('a')
 
-        if (hasId) {
-            const query = searchParams.get('a')
+        if (hasAccount) {
+            const accountQuery = searchParams.has('a') ? searchParams.get('a') : searchParams.get('account')
             // Check if 'id' is not null and is a non-empty string
-            if (query) {
-                let address:Address = query as Address
+            if (accountQuery) {
+                let address:Address = accountQuery as Address
                 let value: any = await TikToken?.[params.method](address)
 
+                // convert to react compatible format if value is bigint
                 if (typeof value == 'bigint') {
-                    let format = hasFormat ? searchParams.get('format'):defaultFormat
+                    let format = hasFormat ? searchParams.get('f') ? searchParams.get('f') : searchParams.get('format') : defaultFormat
                     if (format == null) {
                         format = defaultFormat
                     }
@@ -112,10 +114,9 @@ export async function GET (request:Request,{ params }: { params: { method: strin
         }
     }
 
-    const hasAccount = searchParams.has('account')
     const hasOwner = searchParams.has('owner')
     const hasSpender = searchParams.has('spender')
     console.log(params)
     console.log(hasFormat)
-    return new Response("Running method " + params.method + " with account " + hasAccount)
+    return new Response("Unknown method")
 }
