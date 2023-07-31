@@ -67,12 +67,18 @@ export async function GET (request:Request,{ params }: { params: { method: strin
 
     if (params.method === 'hasMinted' ||params.method === 'getUserAccount') {
         const hasId = searchParams.has('id')
-        const id = 
+
         if (hasId) {
-            let info = TikToken?.[params.method]()
+            const id = searchParams.get('id')
+            // Check if 'id' is not null and is a non-empty string
+            if (id && typeof id === 'string' && id.trim().length > 0) {
+                return new Response(JSON.stringify(await TikToken?.[params.method](id)));
+            } else {
+                return "type error"
+            }
 
         } else {
-            return
+            return "id required"
         }
     }
 
