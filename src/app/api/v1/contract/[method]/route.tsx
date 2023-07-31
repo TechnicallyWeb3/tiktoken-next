@@ -1,6 +1,25 @@
 import TikToken from "@providers/tiktoken/contract"
 import { Address } from "viem"
 
+const defaultFormat = 'dec'
+
+async function getAsFormat(value:bigint, format:string) {
+    switch (format) {
+        case 'cor' :
+            return `${await calculateCor(value)} cor`
+        case 'dec' :
+            return `${await calculateDec(value)} `
+        case 'str' :
+            return `0.${calculateStr(value)} `
+        case 'not' :
+            return `${await calculateNot(value)} `
+        case 'raw' :
+            return `${value} `
+        default :
+            return value.toString()
+    }
+}
+
 async function calculateCor(info:bigint) {
     return Number(info / await TikToken.currentReward())
 }
@@ -39,27 +58,7 @@ export async function GET (request:Request,{ params }: { params: { method: strin
         let info = contractInfo?.[params.method]
         if (hasFormat) {
             const format = searchParams.get('format')
-            let value
-            switch (format) {
-                case 'cor' :
-                    value = `${await calculateCor(info)} ${contractInfo?.symbol}cor`
-                    break;
-                case 'dec' :
-                    value = `${await calculateDec(info)} ${contractInfo?.symbol}`
-                    break;
-                case 'str' :
-                    value = `0.${calculateStr(info)} ${contractInfo?.symbol}`
-                    break;
-                case 'not' :
-                    value = `${await calculateNot(info)} ${contractInfo?.symbol}`
-                    break;
-                case 'raw' :
-                    value = info.toString()
-                    break;
-                default :
-                    value = info.toString()
-            }
-            console.log(value)
+            let value = (format !== null) ? await getAsFormat(info, format) : await getAsFormat(info, defaultFormat)
             return new Response(JSON.stringify(value))
         } else {
             // default response of raw data
@@ -85,16 +84,24 @@ export async function GET (request:Request,{ params }: { params: { method: strin
         }
     }
 
-    if (params.method === 'getAccountIDs' || params.method === 'balanceOf') {
+    if (params.method === 'getUserIDs' || params.method === 'balanceOf') {
         const hasId = searchParams.has('a')
 
         if (hasId) {
-            let address = searchParams.get('a')
+            const query = searchParams.get('a')
             // Check if 'id' is not null and is a non-empty string
-            if (address) {
-                address = address as Address
-                const balance = await TikToken?.[params.method](address)
-                return new Response(JSON.stringify(await calculateDec(balance)));
+            if (query) {
+                let address:Address = query as Address
+                let value: any = await TikToken?.[params.method](address)
+
+                if (typeof value == 'bigint') {
+                    let format = hasFormat ? searchParams.get('format'):defaultFormat
+                    if (format == null) {
+                        format = defaultFormat
+                    }
+                    value = await getAsFormat(value, format)
+                }
+                return new Response(JSON.stringify(value));
             } else {
                 return "type error"
             }
