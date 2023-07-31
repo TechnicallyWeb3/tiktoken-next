@@ -4,42 +4,51 @@ import { Address } from "viem"
 
 const defaultFormat = 'dec'
 
-async function getAsFormat(value:bigint, format:string) {
+async function getAsFormat(value: bigint, format: string) {
     const symbol = await TikToken.tokenSymbol()
     switch (format) {
-        case 'cor' :
+        case 'cor':
             return `${await calculateCor(value)} ${symbol}-cor`
-        case 'dec' :
+        case 'dec':
             return `${await calculateDec(value)} ${symbol}`
-        case 'str' :
+        case 'str':
             return `0.${calculateStr(value)} ${symbol}`
-        case 'not' :
+        case 'not':
             return `${await calculateNot(value)} ${symbol}`
-        case 'raw' :
+        case 'raw':
             return `${value} ${symbol}-cot`
-        default :
+        default:
             return value.toString()
     }
 }
 
-async function calculateCor(info:bigint) {
+async function makeReactSafe(value: any, format: string) {
+    // convert to react compatible format if value is bigint
+    if (typeof value == 'bigint') {
+        return await getAsFormat(value, format)
+    }
+
+    return value
+}
+
+async function calculateCor(info: bigint) {
     return Number(info / await TikToken.currentReward())
 }
 
-async function calculateDec(info:bigint) {
+async function calculateDec(info: bigint) {
     return Number(info) / (10 ** await TikToken.tokenDecimals())
 }
 
-function calculateStr(info:bigint) {
+function calculateStr(info: bigint) {
     return String(info)
 }
 
-async function calculateNot(info:bigint) {
+async function calculateNot(info: bigint) {
     const dec = await calculateDec(info)
     return dec.toExponential()
 }
 
-export async function GET (request:Request,{ params }: { params: { method: string } }) {
+export async function GET(request: Request, { params }: { params: { method: string } }) {
     if (params.method === 'name' || params.method === 'symbol' || params.method === 'decimals' || params.method === 'owner' || params.method === 'getHalvingCount' || params.method === 'getUserCounter') {
         const contractInfo = await TikToken.getInfo()
         let info = contractInfo?.[params.method]
@@ -91,32 +100,53 @@ export async function GET (request:Request,{ params }: { params: { method: strin
 
         if (hasAccount) {
             const accountQuery = searchParams.has('a') ? searchParams.get('a') : searchParams.get('account')
-            // Check if 'id' is not null and is a non-empty string
+            // Check if 'account' is not null
             if (accountQuery) {
-                let address:Address = accountQuery as Address
+                let address: Address = accountQuery as Address
                 let value: any = await TikToken?.[params.method](address)
-
-                // convert to react compatible format if value is bigint
-                if (typeof value == 'bigint') {
-                    let format = hasFormat ? searchParams.get('f') ? searchParams.get('f') : searchParams.get('format') : defaultFormat
-                    if (format == null) {
-                        format = defaultFormat
-                    }
-                    value = await getAsFormat(value, format)
+                let format = hasFormat ? searchParams.get('f') ? searchParams.get('f') : searchParams.get('format') : defaultFormat
+                if (format == null) {
+                    format = defaultFormat
                 }
+
+                value = await makeReactSafe(value, format)
                 return new Response(JSON.stringify(value));
             } else {
                 return "type error"
             }
 
         } else {
-            return "id required"
+            return "account required"
         }
     }
 
-    const hasOwner = searchParams.has('owner')
-    const hasSpender = searchParams.has('spender')
+    if (params.method === 'allowance') {
+        const hasOwner = searchParams.has('owner') || searchParams.has('o')
+        const hasSpender = searchParams.has('spender') || searchParams.has('s')
+        if (hasOwner && hasSpender) {
+            const ownerQuery = searchParams.has('o') ? searchParams.get('o') : searchParams.get('owner')
+            const spenderQuery = searchParams.has('s') ? searchParams.get('s') : searchParams.get('spender')
+            if (ownerQuery && spenderQuery) {
+                let owner: Address = ownerQuery as Address
+                let spender: Address = spenderQuery as Address
+                let value: any = await TikToken?.[params.method](owner, spender)
+                let format = hasFormat ? searchParams.get('f') ? searchParams.get('f') : searchParams.get('format') : defaultFormat
+
+                if (format == null) {
+                    format = defaultFormat
+                }
+                value = await makeReactSafe(value, format)
+
+                return new Response(JSON.stringify(value));
+            } else {
+                return "type error"
+            }
+        } else {
+            return "owner and spender required"
+        }
+
+    }
     console.log(params)
     console.log(hasFormat)
-    return new Response("Unknown method")
+    return "unknown method"
 }
