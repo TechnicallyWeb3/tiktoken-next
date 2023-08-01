@@ -1,6 +1,11 @@
 import TikToken from "@providers/tiktoken/contract"
 
-export async function GET (request:Request) {
+export async function GET (request:Request, { params }: { params: { contract: string } }) {
+
+    if (params.contract.toLowerCase() != 'tik') {
+        console.log(params)
+        return new Response("unknown contract")
+    }
 
     const contractInfo = await TikToken.getInfo()
     const data = {

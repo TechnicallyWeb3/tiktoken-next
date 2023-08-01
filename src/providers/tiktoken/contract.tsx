@@ -6,6 +6,14 @@ const tiktokenAddress = '0x359c3AD611e377e050621Fb3de1C2f4411684E92';
 const tiktokenAbi = abi;
 const contract = getContract({ address: tiktokenAddress, abi: tiktokenAbi, publicClient });
 
+async function sendRawTransaction(sig: Hash) {
+  const signedRequest = sig
+  publicClient.request({
+    method: 'eth_sendRawTransaction',
+    params: [signedRequest],
+  })
+}
+
 const TikToken = {
   contract,
   address: tiktokenAddress,
@@ -86,67 +94,35 @@ const TikToken = {
   },
 
   async transfer(sig: Hash) {
-    const signedRequest = sig
-    publicClient.request({
-      method: 'eth_sendRawTransaction',
-      params: [signedRequest],
-    })
+    sendRawTransaction(sig)
   },
 
   async transferFrom(sig: Hash) {
-    const signedRequest = sig
-    publicClient.request({
-      method: 'eth_sendRawTransaction',
-      params: [signedRequest],
-    })
+    sendRawTransaction(sig)
   },
 
   async approve(sig: Hash) {
-    const signedRequest = sig
-    publicClient.request({
-      method: 'eth_sendRawTransaction',
-      params: [signedRequest],
-    })
+    sendRawTransaction(sig)
   },
 
   async increaseAllowance(sig: Hash) {
-    const signedRequest = sig
-    publicClient.request({
-      method: 'eth_sendRawTransaction',
-      params: [signedRequest],
-    })
+    sendRawTransaction(sig)
   },
 
   async decreaseAllowance(sig: Hash) {
-    const signedRequest = sig
-    publicClient.request({
-      method: 'eth_sendRawTransaction',
-      params: [signedRequest],
-    })
+    sendRawTransaction(sig)
   },
 
   async batchMint(sig: Hash) {
-    const signedRequest = sig
-    publicClient.request({
-      method: 'eth_sendRawTransaction',
-      params: [signedRequest],
-    })
+    sendRawTransaction(sig)
   },
 
   async mint(sig: Hash) {
-    const signedRequest = sig
-    publicClient.request({
-      method: 'eth_sendRawTransaction',
-      params: [signedRequest],
-    })
+    sendRawTransaction(sig)
   },
 
   async updateAddress(sig: Hash) {
-    const signedRequest = sig
-    publicClient.request({
-      method: 'eth_sendRawTransaction',
-      params: [signedRequest],
-    })
+    sendRawTransaction(sig)
   },
 };
 

@@ -1,11 +1,20 @@
 import TikToken from "@providers/tiktoken/contract"
-import { format } from "path"
 import { Address } from "viem"
 
 const defaultFormat = 'dec'
+let contract = TikToken
+
+function loadContract(contractParam:string) {
+    const contractName:string = contractParam.toLowerCase()
+    if (contractName === 'tik') {
+        return TikToken
+    } else {
+        throw new Error("No such contract")
+    }
+}
 
 async function getAsFormat(value: bigint, format: string) {
-    const symbol = await TikToken.tokenSymbol()
+    const symbol = await contract.tokenSymbol()
     switch (format) {
         case 'cor':
             return `${await calculateCor(value)} ${symbol}-cor`
@@ -18,7 +27,7 @@ async function getAsFormat(value: bigint, format: string) {
         case 'raw':
             return `${value} ${symbol}-cot`
         default:
-            return value.toString()
+            return 'unknown format' //value.toString()
     }
 }
 
@@ -32,11 +41,11 @@ async function makeReactSafe(value: any, format: string) {
 }
 
 async function calculateCor(info: bigint) {
-    return Number(info / await TikToken.currentReward())
+    return Number(info / await contract.currentReward())
 }
 
 async function calculateDec(info: bigint) {
-    return Number(info) / (10 ** await TikToken.tokenDecimals())
+    return Number(info) / (10 ** await contract.tokenDecimals())
 }
 
 function calculateStr(info: bigint) {
@@ -48,9 +57,14 @@ async function calculateNot(info: bigint) {
     return dec.toExponential()
 }
 
-export async function GET(request: Request, { params }: { params: { method: string } }) {
+export async function GET(request: Request, { params }: { params: { method: string, contract: string } }) {
+    if (params.contract.toLowerCase() != 'tik') {
+        console.log(params)
+        return new Response("unknown contract")
+    }
+    contract = loadContract(params.contract)
     if (params.method === 'name' || params.method === 'symbol' || params.method === 'decimals' || params.method === 'owner' || params.method === 'getHalvingCount' || params.method === 'getUserCounter') {
-        const contractInfo = await TikToken.getInfo()
+        const contractInfo = await contract.getInfo()
         let info = contractInfo?.[params.method]
         // if type is BigInt convert to number
         if (typeof info === 'bigint') {
@@ -65,17 +79,11 @@ export async function GET(request: Request, { params }: { params: { method: stri
     const hasFormat = searchParams.has('format') || searchParams.has('f')
 
     if (params.method === 'totalSupply' || params.method === 'remainingSupply' || params.method === 'currentReward' || params.method === 'getNextHalving') {
-        const contractInfo = await TikToken.getInfo()
+        const contractInfo = await contract.getInfo()
         let info = contractInfo?.[params.method]
-        if (hasFormat) {
-            const format = searchParams.get('format')
-            let value = (format !== null) ? await getAsFormat(info, format) : await getAsFormat(info, defaultFormat)
+        let format = hasFormat ? searchParams.get('f') ? searchParams.get('f') : searchParams.get('format') : defaultFormat
+        let value = (format !== null) ? await getAsFormat(info, format) : await getAsFormat(info, defaultFormat)
             return new Response(JSON.stringify(value))
-        } else {
-            // default response of raw data
-            return new Response(JSON.stringify(info?.toString()))
-        }
-
     }
 
     if (params.method === 'hasMinted' || params.method === 'getUserAccount') {
