@@ -7,7 +7,7 @@ import { polygon } from 'viem/chains'
 //   }
 // }
 
-export const publicClient = createPublicClient({
+export const polygonClient = createPublicClient({
     batch: {
         multicall: true,
     },

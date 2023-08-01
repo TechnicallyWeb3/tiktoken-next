@@ -1,4 +1,4 @@
-import { publicClient } from "./ViemConfig"
+import { polygonClient } from "./ViemConfig"
 import { Address } from 'viem'
 import { abi } from "./tiktoken/abi"
 export const tiktokenAbi = abi
@@ -10,7 +10,7 @@ export const TikToken = () => {
     }
 
     async function tokenName() {
-        const data = await publicClient.readContract({
+        const data = await polygonClient.readContract({
             address: tiktokenAddress,
             abi: tiktokenAbi,
             functionName: 'name'
@@ -19,7 +19,7 @@ export const TikToken = () => {
     }
 
     async function tokenSymbol() {
-        const data = await publicClient.readContract({
+        const data = await polygonClient.readContract({
             address: tiktokenAddress,
             abi: tiktokenAbi,
             functionName: 'symbol'
@@ -28,7 +28,7 @@ export const TikToken = () => {
     }
 
     async function tokenDecimals() {
-        const data = await publicClient.readContract({
+        const data = await polygonClient.readContract({
             address: tiktokenAddress,
             abi: tiktokenAbi,
             functionName: 'decimals'
@@ -37,7 +37,7 @@ export const TikToken = () => {
     }
 
     async function contractOwner() {
-        const data = await publicClient.readContract({
+        const data = await polygonClient.readContract({
             address: tiktokenAddress,
             abi: tiktokenAbi,
             functionName: 'owner'
@@ -46,7 +46,7 @@ export const TikToken = () => {
     }
 
     async function totalSupply() {
-        const data = await publicClient.readContract({
+        const data = await polygonClient.readContract({
             address: tiktokenAddress,
             abi: tiktokenAbi,
             functionName: 'totalSupply'
@@ -59,7 +59,7 @@ export const TikToken = () => {
     // }
 
     async function remainingSupply() {
-        const data = await publicClient.readContract({
+        const data = await polygonClient.readContract({
             address: tiktokenAddress,
             abi: tiktokenAbi,
             functionName: 'remainingSupply'
@@ -68,7 +68,7 @@ export const TikToken = () => {
     }
 
     async function currentReward() {
-        const data = await publicClient.readContract({
+        const data = await polygonClient.readContract({
             address: tiktokenAddress,
             abi: tiktokenAbi,
             functionName: 'currentReward'
@@ -77,7 +77,7 @@ export const TikToken = () => {
     }
 
     async function getHalvingCount() {
-        const data = await publicClient.readContract({
+        const data = await polygonClient.readContract({
             address: tiktokenAddress,
             abi: tiktokenAbi,
             functionName: 'getHalvingCount'
@@ -86,7 +86,7 @@ export const TikToken = () => {
     }
 
     async function getNextHalving() {
-        const data = await publicClient.readContract({
+        const data = await polygonClient.readContract({
             address: tiktokenAddress,
             abi: tiktokenAbi,
             functionName: 'getNextHalving'
@@ -95,7 +95,7 @@ export const TikToken = () => {
     }
 
     async function getUserCounter() {
-        const data = await publicClient.readContract({
+        const data = await polygonClient.readContract({
             address: tiktokenAddress,
             abi: tiktokenAbi,
             functionName: 'getUserCounter'
@@ -104,7 +104,7 @@ export const TikToken = () => {
     }
 
     async function hasMinted(id:string) {
-        const data = await publicClient.readContract({
+        const data = await polygonClient.readContract({
             address: tiktokenAddress,
             abi: tiktokenAbi,
             functionName: 'hasMinted',
@@ -114,7 +114,7 @@ export const TikToken = () => {
     }
 
     async function getUserAccount(id:string) {
-        const data = await publicClient.readContract({
+        const data = await polygonClient.readContract({
             address: tiktokenAddress,
             abi: tiktokenAbi,
             functionName: 'getUserAccount',
@@ -124,7 +124,7 @@ export const TikToken = () => {
     }
 
     async function getUserIDs(account:Address) {
-        const data = await publicClient.readContract({
+        const data = await polygonClient.readContract({
             address: tiktokenAddress,
             abi: tiktokenAbi,
             functionName: 'getUserIDs',
@@ -134,7 +134,7 @@ export const TikToken = () => {
     }
 
     async function balanceOf(account:Address) {
-        const data = await publicClient.readContract({
+        const data = await polygonClient.readContract({
             address: tiktokenAddress,
             abi: tiktokenAbi,
             functionName: 'balanceOf',
@@ -144,7 +144,7 @@ export const TikToken = () => {
     }
 
     async function allowance(owner:Address, spender:Address) {
-        const data = await publicClient.readContract({
+        const data = await polygonClient.readContract({
             address: tiktokenAddress,
             abi: tiktokenAbi,
             functionName: 'allowance',

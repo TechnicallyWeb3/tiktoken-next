@@ -1,14 +1,14 @@
-import { getContract, Address, TransactionSerializable, Hash } from 'viem';
-import { abi } from './abi';
-import { publicClient } from '@providers/ViemConfig';
+import { getContract, Address, Hash } from 'viem';
+import { abi, address, client } from './abi';
 
-const tiktokenAddress = '0x359c3AD611e377e050621Fb3de1C2f4411684E92';
+const tiktokenAddress = address;
 const tiktokenAbi = abi;
-const contract = getContract({ address: tiktokenAddress, abi: tiktokenAbi, publicClient });
+const tiktokenClient = client;
+const contract = getContract({ address: tiktokenAddress, abi: tiktokenAbi, publicClient: tiktokenClient });
 
 async function sendRawTransaction(sig: Hash) {
   const signedRequest = sig
-  return await publicClient.request({
+  return await tiktokenClient.request({
     method: 'eth_sendRawTransaction',
     params: [signedRequest],
   })
@@ -18,7 +18,7 @@ const TikToken = {
   contract,
   address: tiktokenAddress,
   abi: tiktokenAbi,
-  publicClient,
+  publicClient: tiktokenClient,
 
   async getInfo() {
     const [name, symbol, decimals, owner, totalSupply, remainingSupply, currentReward, getHalvingCount, getNextHalving, getUserCounter] = await Promise.all([

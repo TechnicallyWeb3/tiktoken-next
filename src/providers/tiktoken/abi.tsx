@@ -1,5 +1,6 @@
-import { encodeAbiParameters } from 'viem'
-
+import { polygonClient } from '@providers/ViemConfig'
+export const address = '0x359c3AD611e377e050621Fb3de1C2f4411684E92';
+export const client = polygonClient;
 export const abi = [
     {
         "inputs": [],
@@ -595,4 +596,4 @@ export const abi = [
         "stateMutability": "nonpayable",
         "type": "function"
     }
-] as const
+] as const;

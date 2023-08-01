@@ -1,7 +1,7 @@
 import { PolygonInfo  } from "@providers/PolygonInfo"
 import { TikToken } from "@providers/TikTokenInfo"
 import TikTokenInfo from '@components/SmartContracts'
-import { publicClient } from "@providers/ViemConfig"
+import { polygonClient } from "@providers/ViemConfig"
 
 const AppInfo = () => {
     const symbol = "TIK"//TikToken.tokenSymbol

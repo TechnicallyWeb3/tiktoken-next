@@ -1,5 +1,5 @@
 import TikToken from "@providers/tiktoken/contract"
-import { Address, Hash, Signature } from "viem"
+import { Address, Hash } from "viem"
 
 const defaultFormat = 'dec'
 let contract = TikToken

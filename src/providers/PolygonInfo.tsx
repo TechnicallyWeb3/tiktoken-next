@@ -1,4 +1,4 @@
-import { publicClient } from "./ViemConfig"
+import { polygonClient } from "./ViemConfig"
 
 async function bigintAsNumber(value:BigInt) {
     return Number(value);
@@ -9,7 +9,7 @@ async function bigintAsString(value:BigInt) {
 }
 
 async function getPolygonBlockBigint() {
-    const blockNumber = await publicClient.getBlockNumber();
+    const blockNumber = await polygonClient.getBlockNumber();
     return blockNumber;
 }
 
@@ -18,7 +18,7 @@ async function getPolygonBlockString() {
 }
 
 async function getPolygonGasBigint() {
-    const blockNumber = await publicClient.getGasPrice();
+    const blockNumber = await polygonClient.getGasPrice();
     return blockNumber;
 }
 
