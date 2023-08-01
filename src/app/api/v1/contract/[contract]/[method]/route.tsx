@@ -1,5 +1,5 @@
 import TikToken from "@providers/tiktoken/contract"
-import { Address } from "viem"
+import { Address, Hash, Signature } from "viem"
 
 const defaultFormat = 'dec'
 let contract = TikToken
@@ -93,7 +93,7 @@ export async function GET(request: Request, { params }: { params: { method: stri
             const id = searchParams.get('id')
             // Check if 'id' is not null
             if (id) {
-                return new Response(JSON.stringify(await TikToken?.[params.method](id)));
+                return new Response(JSON.stringify(await contract?.[params.method](id)));
             } else {
                 return "type error"
             }
@@ -111,7 +111,7 @@ export async function GET(request: Request, { params }: { params: { method: stri
             // Check if 'account' is not null
             if (accountQuery) {
                 let address: Address = accountQuery as Address
-                let value: any = await TikToken?.[params.method](address)
+                let value: any = await contract?.[params.method](address)
                 let format = hasFormat ? searchParams.get('f') ? searchParams.get('f') : searchParams.get('format') : defaultFormat
                 if (format == null) {
                     format = defaultFormat
@@ -137,7 +137,7 @@ export async function GET(request: Request, { params }: { params: { method: stri
             if (ownerQuery && spenderQuery) {
                 let owner: Address = ownerQuery as Address
                 let spender: Address = spenderQuery as Address
-                let value: any = await TikToken?.[params.method](owner, spender)
+                let value: any = await contract?.[params.method](owner, spender)
                 let format = hasFormat ? searchParams.get('f') ? searchParams.get('f') : searchParams.get('format') : defaultFormat
 
                 if (format == null) {
@@ -154,6 +154,20 @@ export async function GET(request: Request, { params }: { params: { method: stri
         }
 
     }
+
+    if (params.method === 'transfer' || params.method === 'transferFrom' || params.method === 'approve' || params.method === 'increaseAllowance' || params.method === 'decreaseAllowance' || params.method === 'batchMint' || params.method === 'mint' || params.method === 'updateAddress') {
+        const hasSignature = searchParams.has('signature') || searchParams.has('s')
+        if(hasSignature) {
+            const signatureQuery = searchParams.has('s') ? searchParams.get('s') : searchParams.get('signature')
+            if (signatureQuery) {
+                const signature = signatureQuery as Hash
+                let value: Hash = await contract?.[params.method](signature)
+                return new Response(JSON.stringify(value))
+            }
+        }
+    }
+
+
     console.log(params)
     console.log(hasFormat)
     return "unknown method"

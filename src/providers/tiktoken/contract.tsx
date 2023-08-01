@@ -8,7 +8,7 @@ const contract = getContract({ address: tiktokenAddress, abi: tiktokenAbi, publi
 
 async function sendRawTransaction(sig: Hash) {
   const signedRequest = sig
-  publicClient.request({
+  return await publicClient.request({
     method: 'eth_sendRawTransaction',
     params: [signedRequest],
   })
@@ -94,35 +94,35 @@ const TikToken = {
   },
 
   async transfer(sig: Hash) {
-    sendRawTransaction(sig)
+    return await sendRawTransaction(sig)
   },
 
   async transferFrom(sig: Hash) {
-    sendRawTransaction(sig)
+    return await sendRawTransaction(sig)
   },
 
   async approve(sig: Hash) {
-    sendRawTransaction(sig)
+    return await sendRawTransaction(sig)
   },
 
   async increaseAllowance(sig: Hash) {
-    sendRawTransaction(sig)
+    return await sendRawTransaction(sig)
   },
 
   async decreaseAllowance(sig: Hash) {
-    sendRawTransaction(sig)
+    return await sendRawTransaction(sig)
   },
 
   async batchMint(sig: Hash) {
-    sendRawTransaction(sig)
+    return await sendRawTransaction(sig)
   },
 
   async mint(sig: Hash) {
-    sendRawTransaction(sig)
+    return await sendRawTransaction(sig)
   },
 
   async updateAddress(sig: Hash) {
-    sendRawTransaction(sig)
+    return await sendRawTransaction(sig)
   },
 };
 
