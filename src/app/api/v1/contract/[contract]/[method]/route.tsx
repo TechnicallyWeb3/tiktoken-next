@@ -33,20 +33,21 @@ async function getAsFormat(value: bigint, format: string) {
 
 async function makeReactSafe(value: any, format?: string) {
     // convert to react compatible format if value is bigint
-    if (typeof value == 'bigint') {
-        if(format) {
-            return await getAsFormat(value, format)
-        } else {
-            if (value > BigInt(Number.MAX_SAFE_INTEGER)) {
-                return String(value)
-            } else {
-                return Number(value)
-            }
+    if (typeof value === 'bigint') {
+        if (format) {
+            return await getAsFormat(value, format);
         }
+
+        if (value > BigInt(Number.MAX_SAFE_INTEGER)) {
+            return String(value);
+        }
+
+        return Number(value);
     }
 
-    return value
+    return value;
 }
+
 
 async function calculateCor(info: bigint) {
     return Number(info / await contract.currentReward())
