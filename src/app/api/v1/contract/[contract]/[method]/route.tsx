@@ -31,10 +31,18 @@ async function getAsFormat(value: bigint, format: string) {
     }
 }
 
-async function makeReactSafe(value: any, format: string) {
+async function makeReactSafe(value: any, format?: string) {
     // convert to react compatible format if value is bigint
     if (typeof value == 'bigint') {
-        return await getAsFormat(value, format)
+        if(format) {
+            return await getAsFormat(value, format)
+        } else {
+            if (value > BigInt(Number.MAX_SAFE_INTEGER)) {
+                return String(value)
+            } else {
+                return Number(value)
+            }
+        }
     }
 
     return value
@@ -66,10 +74,7 @@ export async function GET(request: Request, { params }: { params: { method: stri
     if (params.method === 'name' || params.method === 'symbol' || params.method === 'decimals' || params.method === 'owner' || params.method === 'getHalvingCount' || params.method === 'getUserCounter') {
         const contractInfo = await contract.getInfo()
         let info = contractInfo?.[params.method]
-        // if type is BigInt convert to number
-        if (typeof info === 'bigint') {
-            info = Number(info);
-        }
+        info = await makeReactSafe(info)
         return new Response(JSON.stringify(info))
     }
 
