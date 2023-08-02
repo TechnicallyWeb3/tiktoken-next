@@ -6,9 +6,7 @@ function getDateFromTikTokId(id:string) : Date {
 
   // Convert the video ID to binary and take the first 32 bits
   const binaryString = bigIntID.toString(2);
-  console.log(binaryString)
-  console.log(binaryString.length)
-  const first32Bits = '0'+binaryString.slice(0, 31);
+  const first32Bits = '0' + binaryString.slice(0, 31);
 
   // Convert the first 32 bits back to decimal to get the Unix timestamp
   const unixTimestamp = parseInt(first32Bits, 2);
