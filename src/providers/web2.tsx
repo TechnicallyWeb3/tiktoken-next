@@ -117,7 +117,5 @@ export async function getTiktokData(user:string) : Promise<UserData> {
         isDefault: isDefault,
     }
 
-    console.log(data)
-
     return data
 }
