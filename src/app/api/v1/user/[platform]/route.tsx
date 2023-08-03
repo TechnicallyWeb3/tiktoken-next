@@ -19,9 +19,9 @@ export async function GET (request:Request, { params }: { params: { platform: st
                 const user = hasHandle ? searchParams.has('h') ? searchParams.get('h'): searchParams.get('handle') : searchParams.get('id')
                 if (user) {
                 const userData =await getTiktokData(user)
-                const walletData = getWalletData(userData?.account)
-                const linkedIds = getLinkedIds(userData?.account)
-                return new Response (JSON.stringify(userData))
+                const walletData = await getWalletData(userData?.account)
+                const linkedIds = await getLinkedIds(userData?.account)
+                return new Response (JSON.stringify({ userData:userData, walletData:walletData, linkedIds:linkedIds }))
                 } else {
                     return new Response (JSON.stringify("undefined user"))
                 }

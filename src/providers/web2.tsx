@@ -34,6 +34,9 @@ export async function getDefaultId(account:Address):Promise<FQID> {
     }
     return '#@' as FQID
 }
+export function isNum(value:string) {
+    return /^\d+$/.test(value);
+}
 
 export function getDateFromTikTokId(idNum: string): Date {
     // Convert the video ID to a BigInt to ensure it can handle large numbers
@@ -41,16 +44,16 @@ export function getDateFromTikTokId(idNum: string): Date {
 
     // Convert the video ID to binary and take the first 32 bits
     let binaryString = bigIntID.toString(2);
-    console.log(binaryString)
+    // console.log(binaryString)
     while (binaryString.length < 64) {
         binaryString = '0' + binaryString
-        console.log(binaryString.length)
+        // console.log(binaryString.length)
     }
 
     //pad string to 64 chars
     const first32Bits = binaryString.slice(0, 32);
-    console.log(binaryString)
-    console.log(first32Bits)
+    // console.log(binaryString)
+    // console.log(first32Bits)
     // Convert the first 32 bits back to decimal to get the Unix timestamp
     const unixTimestamp = parseInt(first32Bits, 2);
     const registerDate = unixTimestamp > 1400000000 ? unixTimestamp : 1500000000
@@ -72,7 +75,7 @@ export async function getTiktokData(user:string) : Promise<UserData> {
 
     let userData = json.UserModule['users'];
     const handle = Object.keys(userData)[0];
-    console.log(handle)
+    // console.log(handle)
     userData = userData[handle]
     const platform = 'TikTok'
     const idNum = userData.id
@@ -90,8 +93,8 @@ export async function getTiktokData(user:string) : Promise<UserData> {
     const following = statsData.followingCount
     const likes = statsData.heartCount
     const posts = statsData.videoCount
-    const hasMinted = await TikToken.hasMinted(fqid)
-    const account = await TikToken.getUserAccount(fqid)
+    const hasMinted = await TikToken.hasMinted(idNum)
+    const account = await TikToken.getUserAccount(idNum)
     const isDefault = hasMinted ? await getDefaultId(account) == fqid ? true : false : null
 
     const data : UserData = {
@@ -114,7 +117,7 @@ export async function getTiktokData(user:string) : Promise<UserData> {
         isDefault: isDefault,
     }
 
-    // console.log(data)
+    console.log(data)
 
     return data
 }

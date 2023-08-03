@@ -1,0 +1,64 @@
+{
+    "userData": {
+        "platform": "TikTok"
+        , "id": "7102860450027078702"
+        , "handle": "echodatruth"
+        , "name": "Echo"
+        , "registerDate": "2022-05-28T18:46:10.000Z"
+        , "smImage": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/471a24fbfa77f1937d769f638884f740~c5_100x100.jpeg?x-expires=1691211600&x-signature=qGxNTO2sPuYuMYLiETPf1Acl1bE%3D"
+        , "mdImage": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/471a24fbfa77f1937d769f638884f740~c5_720x720.jpeg?x-expires=1691211600&x-signature=CmZRKDv7RKWEVu8UW6SyRrwa34s%3D"
+        , "lgImage": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/471a24fbfa77f1937d769f638884f740~c5_1080x1080.jpeg?x-expires=1691211600&x-signature=cKl%2BGWkwTD6SsLdUs%2BM7DajowDw%3D"
+        , "bio": "Assembling the awakening to rebuild the future XRP-XLM-XDC while being positive"
+        , "verified": false
+        , "followers": 70300
+        , "following": 639
+        , "likes": 1800000
+        , "posts": 670
+        , "hasMinted": true
+        , "account": "0xC96E7bE9d33c3822A5FaE6A534ed579541B1D08A"
+        , "isDefault": true
+    }
+    , "walletData": {
+        "account": "0xC96E7bE9d33c3822A5FaE6A534ed579541B1D08A"
+        , "balances": ["0", "1321000000000000"]
+        , "isRegistered": true
+        , "defaultId": {
+            "platform": "TikTok"
+            , "id": "7102860450027078702"
+            , "handle": "echodatruth"
+            , "name": "Echo"
+            , "registerDate": "2022-05-28T18:46:10.000Z"
+            , "smImage": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/471a24fbfa77f1937d769f638884f740~c5_100x100.jpeg?x-expires=1691211600&x-signature=qGxNTO2sPuYuMYLiETPf1Acl1bE%3D"
+            , "mdImage": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/471a24fbfa77f1937d769f638884f740~c5_720x720.jpeg?x-expires=1691211600&x-signature=CmZRKDv7RKWEVu8UW6SyRrwa34s%3D"
+            , "lgImage": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/471a24fbfa77f1937d769f638884f740~c5_1080x1080.jpeg?x-expires=1691211600&x-signature=cKl%2BGWkwTD6SsLdUs%2BM7DajowDw%3D"
+            , "bio": "Assembling the awakening to rebuild the future XRP-XLM-XDC while being positive"
+            , "verified": false
+            , "followers": 70300
+            , "following": 639
+            , "likes": 1800000
+            , "posts": 670
+            , "hasMinted": true
+            , "account": "0xC96E7bE9d33c3822A5FaE6A534ed579541B1D08A"
+            , "isDefault": true
+        }
+    }
+    , "linkedIds": [{
+        "platform": "TikTok"
+        , "id": "7102860450027078702"
+        , "handle": "echodatruth"
+        , "name": "Echo"
+        , "registerDate": "2022-05-28T18:46:10.000Z"
+        , "smImage": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/471a24fbfa77f1937d769f638884f740~c5_100x100.jpeg?x-expires=1691211600&x-signature=qGxNTO2sPuYuMYLiETPf1Acl1bE%3D"
+        , "mdImage": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/471a24fbfa77f1937d769f638884f740~c5_720x720.jpeg?x-expires=1691211600&x-signature=CmZRKDv7RKWEVu8UW6SyRrwa34s%3D"
+        , "lgImage": "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/471a24fbfa77f1937d769f638884f740~c5_1080x1080.jpeg?x-expires=1691211600&x-signature=cKl%2BGWkwTD6SsLdUs%2BM7DajowDw%3D"
+        , "bio": "Assembling the awakening to rebuild the future XRP-XLM-XDC while being positive"
+        , "verified": false
+        , "followers": 70300
+        , "following": 639
+        , "likes": 1800000
+        , "posts": 670
+        , "hasMinted": true
+        , "account": "0xC96E7bE9d33c3822A5FaE6A534ed579541B1D08A"
+        , "isDefault": true
+    }]
+}

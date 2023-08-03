@@ -1,7 +1,7 @@
 import { Address, PublicClient } from "viem"
 import TikToken from "./tiktoken/contract"
 import { polygonClient } from "./ViemConfig"
-import { FQID, UserData, getDefaultId, getTiktokData } from "./web2"
+import { FQID, UserData, getDefaultId, getTiktokData, isNum } from "./web2"
 
 export class WalletData {
     account: Address = '0x0'
@@ -17,12 +17,14 @@ export class IdCluster {
 export async function getBalances(account:Address, publicClients?:PublicClient[], tokens?:string[]) {
     const balances = []
     if (publicClients) {
-        // get balances from all chains requested
+        // get balances from all chains requested instead (temporary)
+        balances.push(String(await polygonClient.getBalance({ address:account })))
     } else {
         balances.push(String(await polygonClient.getBalance({ address:account })))
     }
     if (tokens) {
-        // get balances of requested tokens
+        // get balances of requested tokens instead (temporary)
+        balances.push(String(await TikToken.balanceOf(account)))
     } else {
         balances.push(String(await TikToken.balanceOf(account)))
     }
@@ -30,17 +32,32 @@ export async function getBalances(account:Address, publicClients?:PublicClient[]
 }
 export async function getWalletData(account: Address) {
     const defaultFqid = await getDefaultId(account)
+    console.log(defaultFqid)
+    const id = defaultFqid.split('@')[1]
     const balances = await getBalances(account)
+    console.log(balances)
     const isRegistered = defaultFqid.length > 4
-    const defaultId : UserData = await getTiktokData(defaultFqid)
+    console.log(isRegistered)
+    const defaultId : UserData = await getTiktokData(id)
+    console.log(defaultId)
     const data : WalletData = {
         account: account,
         balances: balances,
         isRegistered: isRegistered,
         defaultId: defaultId,
     }
+    console.log(data)
+    return data
 }
 
-export async function getLinkedIds(address: Address) {
-    return "Some ID Data"
+export async function getLinkedIds(account: Address) {
+    const ids = await TikToken.getUserIDs(account) //update to fqdn on switch
+    const data : UserData[] = []
+    for (let i = 0; i < ids.length; i++) {
+        if (isNum(ids[i])) {
+            const id = await getTiktokData(ids[i])
+            data.push(id)
+        }
+    }
+    return data
 }
