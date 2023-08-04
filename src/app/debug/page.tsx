@@ -1,7 +1,9 @@
 import { PolygonInfo  } from "@providers/PolygonInfo"
-import { TikToken } from "@providers/TikTokenInfo"
 import TikTokenInfo from '@components/SmartContracts'
-import { polygonClient } from "@providers/ViemConfig"
+import Profile from "@components/Profile"
+import { getTiktokData } from "@providers/web2"
+
+const userData = await getTiktokData('mancinotech')
 
 const AppInfo = () => {
     const symbol = "TIK"//TikToken.tokenSymbol
@@ -13,6 +15,7 @@ const AppInfo = () => {
         <h2>Supported Contracts</h2>
         <TikTokenInfo />
         <h2>Wallet Info</h2>
+        <Profile size="dev" profile={userData} />
     </div>
   )
 }

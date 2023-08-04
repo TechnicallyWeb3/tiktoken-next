@@ -13,5 +13,5 @@ export async function GET (request:Request) {
             return new Response (JSON.stringify({ walletData:walletData, linkedIds:linkedIds }))
         }
     }
-    return new Response ('must include address')
+    return new Response ('address required ')
 }

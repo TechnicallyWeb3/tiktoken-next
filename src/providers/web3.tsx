@@ -3,11 +3,15 @@ import TikToken from "./tiktoken/contract"
 import { polygonClient } from "./ViemConfig"
 import { FQID, UserData, getDefaultId, getTiktokData, isNum } from "./web2"
 
-export class WalletData {
-    account: Address = '0x0'
-    balances: string[] = ['0']
-    isRegistered: boolean = false
+export interface WalletData {
+    account: Address
+    balances: string[]
+    isRegistered: boolean
     defaultId?: UserData
+}
+
+export interface LinkedIDs {
+    ids?: UserData[]
 }
 
 export async function getBalances(account: Address, publicClients?: PublicClient[], tokens?: string[]) {
@@ -28,35 +32,32 @@ export async function getBalances(account: Address, publicClients?: PublicClient
 }
 export async function getWalletData(account: Address) {
     const defaultFqid = await getDefaultId(account)
-    if (defaultFqid) {
-        console.log(defaultFqid)
+    const balances = await getBalances(account)
+    let isRegistered = false
+    const data: WalletData = {
+        account: account,
+        balances: balances,
+        isRegistered: isRegistered,
+    }
+    if (defaultFqid.length > 2) {
         const id = defaultFqid.split('@')[1]
-        const balances = await getBalances(account)
-        console.log(balances)
-        const isRegistered = defaultFqid.length > 4
+        data.isRegistered = defaultFqid.length > 4
         if (isNum(id)) { // change to fqid check
             const defaultId: UserData = await getTiktokData(id)
             console.log(defaultId)
-            const data: WalletData = {
-                account: account,
-                balances: balances,
-                isRegistered: isRegistered,
-                defaultId: defaultId,
-            }
-
-            return data
+            data.defaultId = defaultId
         }
     }
-    return "fqid error"
+    return data
 }
 
 export async function getLinkedIds(account: Address) {
     const ids = await TikToken.getUserIDs(account) //update to fqdn on switch
-    const data: UserData[] = []
+    const data: LinkedIDs = {ids:[]}
     for (let i = 0; i < ids.length; i++) {
-        if (isNum(ids[i])) {
-            const id = await getTiktokData(ids[i])
-            data.push(id)
+        if (isNum(ids[i])) { // needs to include fqid and platform selection
+            const id = await getTiktokData(ids[i]) //should create a getUserData(platform, id)
+            data.ids?.push(id)
         }
     }
     return data

@@ -3,25 +3,29 @@ import TikToken from '@providers/tiktoken/contract';
 import { Address } from 'viem';
 
 export type FQID = `#${string}@${string}`
-export class UserData {
-    platform: string = ""
-    id: string = ""
-    handle: string = ""
-    name: string = ""
-    registerDate?: Date = new Date
-    smImage: URL = new URL('')
-    mdImage: URL = new URL('')
-    lgImage: URL = new URL('')
-    bio: string = ""
-    verified: boolean | string = false
-    followers: number = 0
-    following: number = 0
-    likes: number = 0
-    posts: number = 0
-    hasMinted: boolean = false
-    account: Address = '0x0'
-    isDefault: boolean | null = null
+export interface UserData {
+    platform: string
+    id: string
+    handle: string
+    name: string
+    registerDate?: Date
+    smImage: URL
+    mdImage: URL
+    lgImage: URL
+    bio: string
+    verified: boolean | string
+    followers: number
+    following: number
+    likes: number
+    posts: number
+    hasMinted: boolean
+    account: Address
+    isDefault: boolean | null
 }
+
+// export interface ProfileData {
+
+// }
 
 export async function getDefaultId(account:Address):Promise<FQID> {
     const ids = await TikToken.getUserIDs(account)
@@ -70,6 +74,7 @@ export async function getTiktokData(user:string) : Promise<UserData> {
     const $ = cheerio.load(html)
     // console.log(html)
     const appContext = $("#SIGI_STATE").text();
+    // console.log(appContext.split('users')[1])
     const json = JSON.parse(appContext);
     // console.log(json)
 

@@ -18,10 +18,11 @@ export async function GET (request:Request, { params }: { params: { platform: st
             if (hasHandle || hasId) {
                 const user = hasHandle ? searchParams.has('h') ? searchParams.get('h'): searchParams.get('handle') : searchParams.get('id')
                 if (user) {
-                const userData =await getTiktokData(user)
+                const userData = await getTiktokData(user)
                 const walletData = await getWalletData(userData?.account)
                 const linkedIds = await getLinkedIds(userData?.account)
-                return new Response (JSON.stringify({ userData:userData, walletData:walletData, linkedIds:linkedIds }))
+                const profileData = { userData, walletData, linkedIds }
+                return new Response (JSON.stringify(profileData))
                 } else {
                     return new Response (JSON.stringify("undefined user"))
                 }

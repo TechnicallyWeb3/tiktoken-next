@@ -1,0 +1,17 @@
+diff --git a/node_modules/next/dist/server/lib/incremental-cache/index.js b/node_modules/next/dist/server/lib/incremental-cache/index.js
+index bc11e84..304e295 100644
+--- a/node_modules/next/dist/server/lib/incremental-cache/index.js
++++ b/node_modules/next/dist/server/lib/incremental-cache/index.js
+@@ -271,9 +271,10 @@ class IncrementalCache {
+     async set(pathname, data, revalidateSeconds, fetchCache, fetchUrl, fetchIdx) {
+         if (this.dev && !fetchCache) return;
+         // fetchCache has upper limit of 2MB per-entry currently
+-        if (fetchCache && JSON.stringify(data).length > 2 * 1024 * 1024) {
++        const max_fetch_size = Number(process.env.MAX_FETCH_SIZE) || 2 //gets value set in next.config
++        if (fetchCache && JSON.stringify(data).length > max_fetch_size * 1024 * 1024) {
+             if (this.dev) {
+-                throw new Error(`fetch for over 2MB of data can not be cached`);
++                throw new Error(`fetch for over ${max_fetch_size}MB of data can not be cached`);
+             }
+             return;
+         }
