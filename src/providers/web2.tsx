@@ -27,10 +27,10 @@ export interface UserData {
 
 // }
 
-export async function getDefaultId(account:Address):Promise<FQID> {
+export async function getDefaultId(account: Address): Promise<FQID> {
     const ids = await TikToken.getUserIDs(account)
     if (ids.length > 0) {
-        const lastId = ids[ids.length-1]
+        const lastId = ids[ids.length - 1]
         if (lastId.startsWith('#') && lastId.includes('@')) {
             return lastId as FQID
         }
@@ -38,7 +38,7 @@ export async function getDefaultId(account:Address):Promise<FQID> {
     }
     return '#@' as FQID
 }
-export function isNum(value:string) {
+export function isNum(value: string) {
     return /^\d+$/.test(value);
 }
 
@@ -64,7 +64,7 @@ export function getDateFromTikTokId(idNum: string): Date {
     return new Date(registerDate * 1000);
 }
 
-export async function getTiktokData(user:string) : Promise<UserData> {
+export async function getTiktokData(user: string): Promise<UserData> {
     const url = new URL(`https://tiktok.com/@${user}`)
 
     const response = await fetch(url)
@@ -85,7 +85,7 @@ export async function getTiktokData(user:string) : Promise<UserData> {
     const platform = 'TikTok'
     const idNum = userData.id
     const id = userData.secUid
-    const fqid:FQID = `#${platform.toLowerCase()}@${idNum}` // fully qualified identifier
+    const fqid: FQID = `#${platform.toLowerCase()}@${idNum}` // fully qualified identifier
     const name = userData.nickname
     const date = getDateFromTikTokId(idNum)
     const lgImage = userData.avatarLarger
@@ -102,7 +102,7 @@ export async function getTiktokData(user:string) : Promise<UserData> {
     const account = await TikToken.getUserAccount(idNum)
     const isDefault = hasMinted ? await getDefaultId(account) == fqid ? true : false : null
 
-    const data : UserData = {
+    const data: UserData = {
         platform: platform,
         id: idNum,
         handle: handle,
@@ -123,4 +123,17 @@ export async function getTiktokData(user:string) : Promise<UserData> {
     }
 
     return data
+}
+
+export async function getUserData(platform: string, id: string) {
+    switch (platform) {
+        case 'dev':
+        case 'developer':
+            const isDev = id == 'mancinotech'
+            return `${id} isDev: ${isDev}`
+        case 'tiktok':
+                return await getTiktokData(id)
+        default:
+            return "unsupported platform"
+    }
 }

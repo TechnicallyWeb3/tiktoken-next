@@ -8,11 +8,12 @@ export interface ProfileProps {
 }
 
 export interface UserProps {
+    platform: string
+    id?:string // should be either ID or handle
+    handle?: string // should be either or
     smImage?: URL
     mdImage?: URL
     lgImage?: URL
-    handle: string
-    platform: string
     name?: string
     verified?: boolean | string
     registerDate?: Date
@@ -24,10 +25,12 @@ export interface UserProps {
     linkedIds?:LinkedIDs
 }
 
-const ProfileTag: React.FC<UserProps> = ({ smImage, handle, platform }) => {
+const ProfileTag: React.FC<UserProps> = ({ id, handle, platform }) => {
+    // getuserData...
+    
     return (
         <div>
-            <img src={smImage ? smImage.toString():defaultImage} />@{handle}({platform})
+            {/* <img src={smImage ? smImage.toString():defaultImage} />@{handle}({platform}) */}
         </div>
     )
 }
@@ -77,7 +80,7 @@ const Profile: React.FC<ProfileProps> = ({ size, profile }) => {
     let html = "<div>loading<div>"
     switch(size) {
         case "tag":
-            return ( <ProfileTag smImage={profile.smImage} handle={profile.handle} platform={profile.platform} /> )
+            return ( <ProfileTag id={profile.id} platform={profile.platform} /> )
         case "flag":
             return ( <ProfileFlag smImage={profile.smImage} name={profile.name} handle={profile.handle} registerDate={profile.registerDate} verified={profile.verified} platform={profile.platform} /> )
         case "card":
