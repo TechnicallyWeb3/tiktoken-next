@@ -1,23 +1,31 @@
-import { PolygonInfo  } from "@providers/PolygonInfo"
-import TikTokenInfo from '@components/SmartContracts'
-import Profile from "@components/Profile"
-import { getTiktokData } from "@providers/web2"
+import { PolygonInfo } from "@providers/PolygonInfo";
+import TikTokenInfo from '@components/SmartContracts';
+import Profile from "@components/Profile";
+import { getTiktokData } from "@providers/web2";
 
-const userData = await getTiktokData('mancinotech')
+const userData = await getTiktokData('devilking6105');
 
 const AppInfo = () => {
-    const symbol = "TIK"//TikToken.tokenSymbol
+  const symbol = "TIK"; // TikToken.tokenSymbol
   return (
-    <div>
-        <h1>App Info</h1>
-        <h2>Supported Chains</h2>
-        <PolygonInfo />
-        <h2>Supported Contracts</h2>
-        <TikTokenInfo />
-        <h2>Wallet Info</h2>
-        <Profile size="dev" profile={userData} />
+    <div className="container">
+      <div className="card-container">
+        <h1 className="section-title">App Info</h1>
+        <div className="card">
+          <h2 className="card-title">Supported Chains</h2>
+          <PolygonInfo />
+        </div>
+        <div className="card">
+          <h2 className="card-title">Supported Contracts</h2>
+          <TikTokenInfo />
+        </div>
+        <div>
+          <h2>Wallet Info</h2>
+          <Profile size="dev" profile={userData} />
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default AppInfo
+export default AppInfo;
